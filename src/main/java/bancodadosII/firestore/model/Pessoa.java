@@ -8,6 +8,8 @@ import java.time.LocalDate;
 @Setter
 @ToString
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Pessoa {
 
     private String nome;

@@ -1,11 +1,11 @@
-package bancodadosII.firestore;
+package bancodadosII.firestore.controller;
 
 import bancodadosII.firestore.model.Pessoa;
+import bancodadosII.firestore.service.PessoaService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.ExecutionException;
 
@@ -21,11 +21,18 @@ public class PessoaController {
     public String salvarPessoa(@RequestBody Pessoa pessoa) {
 
         try {
-            return pessoaService.saveProduct(pessoa);
+            return pessoaService.savePessoa(pessoa);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
 
         return null;
+    }
+
+    @GetMapping("getPessoa/{nomePessoa}")
+    public ResponseEntity<Pessoa> getPessoa( @PathVariable String nomePessoa){
+
+        return ResponseEntity.ok(this.pessoaService.getPessoa(nomePessoa));
+
     }
 }
