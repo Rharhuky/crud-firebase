@@ -2,10 +2,7 @@ package bancodadosII.firestore.service;
 
 import bancodadosII.firestore.model.Pessoa;
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Service;
 
@@ -24,15 +21,15 @@ public class PessoaService {
 
         DocumentReference docReferencia = fireStoreDB.collection(COLLECTION_NAME).add(pessoa).get();
 
-        return docReferencia.getId() ;
+        return docReferencia.getId();
     }
 
-    public Pessoa getPessoa(String nome){
+    public Pessoa getPessoa(String nome) {
 
         Firestore firestoreDB = FirestoreClient.getFirestore();
         DocumentReference documentReference = firestoreDB.collection(COLLECTION_NAME).document(nome);
 
-        ApiFuture<DocumentSnapshot> documentSnapshotApiFuture =  documentReference.get();
+        ApiFuture<DocumentSnapshot> documentSnapshotApiFuture = documentReference.get();
         DocumentSnapshot documentSnapshot = null;
         try {
 
@@ -45,5 +42,62 @@ public class PessoaService {
         }
 
     }
+/*
+
+    public Pessoa updatePessoa(Pessoa pessoa) {
+
+        Firestore firestoreDB = FirestoreClient.getFirestore();
+        DocumentReference documentReference = firestoreDB.collection(COLLECTION_NAME).document(pessoa.getNome());
+        ApiFuture<DocumentSnapshot> documentSnapshotApiFuture = documentReference.get();
+
+        DocumentSnapshot documentSnapshot = null;
+        try {
+            documentSnapshot = documentSnapshotApiFuture.get();
+
+            if (documentSnapshot.exists()) {
+
+                documentReference.set(pessoa);
+                return documentReference.get().get().toObject(Pessoa.class);
+            }
+            return null;
+
+        } catch (ExecutionException | InterruptedException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+ */
+
+    /**
+     * Atualizar Pessoa através do nome
+     * @param novaPessoa
+     * @return
+     */
+    public Pessoa updatePessoa(Pessoa novaPessoa){
+
+        Firestore firestoreDB = FirestoreClient.getFirestore();
+        try {
+
+            CollectionReference pessoaCollectionReference = firestoreDB.collection(COLLECTION_NAME);
+            Query query = pessoaCollectionReference.whereEqualTo("nome", novaPessoa.getNome());
+
+            ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
+            QuerySnapshot querySnapshot = querySnapshotApiFuture.get();
+
+            if(! querySnapshot.isEmpty()) {
+                DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
+                documentSnapshot.getReference().set(novaPessoa);
+                return novaPessoa;
+            }
+            return null;
+        }
+        catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 
 }
+
+

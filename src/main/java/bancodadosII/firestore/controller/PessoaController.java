@@ -29,10 +29,18 @@ public class PessoaController {
         return null;
     }
 
-    @GetMapping("getPessoa/{nomePessoa}")
+    @GetMapping("/getPessoa/{nomePessoa}")
     public ResponseEntity<Pessoa> getPessoa( @PathVariable String nomePessoa){
 
         return ResponseEntity.ok(this.pessoaService.getPessoa(nomePessoa));
 
     }
+
+    @PutMapping("/atualizarPessoa")
+    public ResponseEntity<Pessoa> atualizarPessoa(@RequestBody Pessoa pessoa){
+
+        return ResponseEntity.status(HttpStatus.OK).body(this.pessoaService.updatePessoa(pessoa));
+
+    }
+
 }
