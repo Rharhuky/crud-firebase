@@ -4,16 +4,19 @@ import bancodadosII.firestore.model.Pessoa;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ExecutionException;
 
+@Log4j2
 @Service
 public class PessoaService {
 
     private static final String COLLECTION_NAME = "pessoas";
 
-    public String savePessoa(Pessoa pessoa) throws ExecutionException, InterruptedException {
+    public String savePessoa(Pessoa pessoa) throws Exception {
 
         Firestore fireStoreDB = FirestoreClient.getFirestore();
 
@@ -37,7 +40,7 @@ public class PessoaService {
             return documentSnapshot.toObject(Pessoa.class);
 
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            log.error("Deu erro na busca pelo ID");
             return null;
         }
 

@@ -7,9 +7,10 @@ import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
 import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-
+@Log4j2
 @Service
 public class ProvaService {
 
@@ -34,6 +35,12 @@ public class ProvaService {
 
         ApiFuture<DocumentSnapshot> documentSnapshotApiFuture = documentReference.get();
         DocumentSnapshot documentSnapshot = documentSnapshotApiFuture.get();
+
+        try {
+            Integer n = Integer.parseInt("-h");
+        } catch (Exception exception) {
+            log.error("Testando Erro");
+        }
 
         return documentSnapshot.toObject(Prova.class);
     }

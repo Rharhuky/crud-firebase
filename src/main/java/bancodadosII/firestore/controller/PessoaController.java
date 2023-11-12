@@ -18,29 +18,18 @@ public class PessoaController {
     private final PessoaService pessoaService;
 
     @PostMapping("/savePessoa")
-    public String salvarPessoa(@RequestBody Pessoa pessoa) {
-
-        try {
-            return pessoaService.savePessoa(pessoa);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+    public String salvarPessoa(@RequestBody Pessoa pessoa) throws Exception {
+        return pessoaService.savePessoa(pessoa);
     }
 
     @GetMapping("/getPessoa/{nomePessoa}")
     public ResponseEntity<Pessoa> getPessoa( @PathVariable String nomePessoa){
-
         return ResponseEntity.ok(this.pessoaService.getPessoa(nomePessoa));
-
     }
 
     @PutMapping("/atualizarPessoa")
     public ResponseEntity<Pessoa> atualizarPessoa(@RequestBody Pessoa pessoa){
-
         return ResponseEntity.status(HttpStatus.OK).body(this.pessoaService.updatePessoa(pessoa));
-
     }
 
 }
