@@ -8,5 +8,6 @@
 * Cada entidade é uma coleção.
 #### Owner
 * [Rharhuky](https://github.com/Rharhuky)
+* [Jefferson](https://github.com/J3ffn)
 * Repositório de estudo | Firebase, Spring boot
 * crud-firebase
